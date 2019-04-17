@@ -4,6 +4,7 @@
 static char recipientAddress[FULL_ADDRESS_LENGTH];
 static char fullAmount[80];
 static char fee[80];
+static char payload[80];
 static uint32_t accountNumber;
 static uint16_t dataLength;
 static uint8_t *data;
@@ -18,6 +19,8 @@ static const bagl_element_t ui_approval_nanos[] = {
     UI_LABELINE(0x03, recipientAddress, UI_SECOND, BAGL_FONT_OPEN_SANS_EXTRABOLD_11px, 50),
     UI_LABELINE(0x04, "Fees",           UI_FIRST,  BAGL_FONT_OPEN_SANS_REGULAR_11px,   0),
     UI_LABELINE(0x04, fee,              UI_SECOND, BAGL_FONT_OPEN_SANS_EXTRABOLD_11px, 26),
+    UI_LABELINE(0x05, "Payload",        UI_FIRST,  BAGL_FONT_OPEN_SANS_REGULAR_11px,   0),
+    UI_LABELINE(0x05, payload,          UI_SECOND, BAGL_FONT_OPEN_SANS_EXTRABOLD_11px, 26),
 };
 
 static unsigned int ui_approval_nanos_button(unsigned int button_mask, unsigned int button_mask_counter) {
@@ -52,8 +55,8 @@ void handleSign(uint8_t p1, uint8_t p2, uint8_t *workBuffer, uint16_t workBuffer
     data = workBuffer;
 
     ux_step = 0;
-    ux_step_count = 4;
-    parseTx(senderPublicKey, recipientAddress, fullAmount, fee, data + networkIdLength, dataLength - networkIdLength);
+    ux_step_count = 5;
+    parseTx(senderPublicKey, recipientAddress, fullAmount, fee, payload, data + networkIdLength, dataLength - networkIdLength);
     getPublicKey(accountNumber, publicKey);
 
     if (os_memcmp(publicKey, senderPublicKey, sizeof(publicKey)) != 0) {
